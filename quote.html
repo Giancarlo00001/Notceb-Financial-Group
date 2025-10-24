@@ -147,7 +147,16 @@
         }
 
         .form-step.active {
-            display: block;
+            display: block !important;
+        }
+
+        /* Ensure only active step is visible */
+        .form-step:not(.active) {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            overflow: hidden !important;
         }
 
         .step-header {
@@ -618,6 +627,26 @@
             .form-step {
                 display: flex;
                 flex-direction: column;
+            }
+
+            /* CRITICAL: Only show active step on mobile */
+            .form-step:not(.active) {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                position: absolute !important;
+                left: -9999px !important;
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+
+            .form-step.active {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                position: relative !important;
+                left: auto !important;
+                height: auto !important;
             }
 
             /* Reduce verification section padding */
@@ -1468,6 +1497,19 @@
         }
 
         updateProgress();
+
+        // Initialize: Ensure only step 1 is visible
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.form-step').forEach((step, index) => {
+                if (step.getAttribute('data-step') === '1') {
+                    step.classList.add('active');
+                    step.style.display = 'block';
+                } else {
+                    step.classList.remove('active');
+                    step.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>
