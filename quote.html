@@ -693,7 +693,9 @@
 
                         <button type="button" class="btn-secondary" onclick="goToStep(5)" style="width: 100%; margin-top: 24px;">← Back</button>
                     </div>
-                    <div class="form-step" data-step="6">
+
+                    <!-- Step 7: Name -->
+                    <div class="form-step" data-step="7">
                         <div class="step-header">
                             <h2 class="step-title">What's your name?</h2>
                             <p class="step-subtitle">We're almost done - just need a few details</p>
@@ -712,7 +714,7 @@
                         </div>
 
                         <div class="button-group">
-                            <button type="button" class="btn-secondary" onclick="goToStep(5)">← Back</button>
+                            <button type="button" class="btn-secondary" onclick="goToStep(6)">← Back</button>
                             <button type="button" class="btn-primary" style="flex: 1;" onclick="validateNameAndContinue()">
                                 <span class="btn-text">Continue →</span>
                             </button>
@@ -723,8 +725,8 @@
                         </div>
                     </div>
 
-                    <!-- Step 7: Phone & Email with Verification -->
-                    <div class="form-step" data-step="7">
+                    <!-- Step 8: Phone & Email with Verification -->
+                    <div class="form-step" data-step="8">
                         <div class="step-header">
                             <h2 class="step-title">Last step!</h2>
                             <p class="step-subtitle">Where should we send your free quote?</p>
@@ -947,7 +949,7 @@
                 return;
             }
 
-            goToStep(7);
+            goToStep(8);
         }
 
         function handlePhoneSubmit() {
