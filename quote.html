@@ -143,6 +143,7 @@
 
         .form-step {
             display: none;
+            min-height: 300px;
         }
 
         .form-step.active {
@@ -475,16 +476,154 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 4px 8px 8px 8px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .header {
+                margin-bottom: 8px;
+                padding-top: 2px;
+            }
+
+            .logo {
+                font-size: 0.95rem;
+            }
+
+            .social-proof-banner {
+                padding: 6px 10px;
+                gap: 10px;
+                margin-bottom: 8px;
+            }
+
+            .proof-item {
+                font-size: 0.65rem;
+            }
+
+            .proof-icon {
+                font-size: 0.9rem;
+            }
+
+            .main-card {
+                border-radius: 12px;
+            }
+
+            .card-header {
+                padding: 20px 16px 16px;
+            }
+
+            .card-header h1 {
+                font-size: 1.2rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .coverage-amount {
+                font-size: 1.5rem;
+            }
+
+            .card-header p {
+                font-size: 0.8rem;
+                margin-top: 8px;
+            }
+
+            .progress-bar {
+                margin-top: 16px;
+                height: 4px;
+            }
+
+            .form-section {
+                padding: 16px 14px;
+                min-height: auto;
+            }
+
+            .step-header {
+                margin-bottom: 18px;
+            }
+
+            .step-title {
+                font-size: 1.15rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .step-subtitle {
+                font-size: 0.8rem;
+            }
+
+            .form-group {
+                margin-bottom: 14px;
+            }
+
             .form-row {
                 grid-template-columns: 1fr;
+                gap: 14px;
             }
 
             .button-group {
                 flex-direction: column-reverse;
+                gap: 10px;
+                margin-top: 20px;
             }
 
             .btn-secondary, .btn-primary {
                 width: 100%;
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+
+            .age-value {
+                font-size: 2.8rem;
+            }
+
+            .age-display {
+                margin-bottom: 16px;
+            }
+
+            .age-label {
+                font-size: 0.9rem;
+            }
+
+            .radio-option label {
+                font-size: 0.9rem;
+                padding: 12px 14px;
+            }
+
+            .radio-grid {
+                gap: 10px;
+            }
+
+            /* Prevent iOS zoom on input focus */
+            input, select, textarea {
+                font-size: 16px;
+            }
+
+            input[type="range"] {
+                height: 8px;
+            }
+
+            /* Success page mobile */
+            .success-section {
+                padding: 16px 14px;
+            }
+
+            /* Risk reversal text */
+            .risk-reversal {
+                font-size: 0.75rem;
+                margin-top: 14px;
+            }
+
+            /* Ensure content fits in viewport */
+            .form-step {
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Reduce verification section padding */
+            #verificationSection {
+                margin-top: 12px;
+                padding: 12px;
             }
         }
     </style>
@@ -517,7 +656,7 @@
                 </h1>
                 <p>Final expense coverage starting at <span style="color: #fbbf24; font-weight: 700;">less than $1/day</span></p>
                 <div class="progress-bar">
-                    <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                    <div class="progress-fill" id="progressBar" style="width: 12.5%"></div>
                 </div>
             </div>
 
@@ -902,6 +1041,7 @@
 
         // Make Firebase functions available globally
         window.signInWithPhoneNumber = signInWithPhoneNumber;
+        window.RecaptchaVerifier = RecaptchaVerifier;
     </script>
 
     <script>
@@ -1053,10 +1193,18 @@
                     document.getElementById('continueBtn').innerHTML = '<span class="btn-text">Continue →</span>';
                     document.getElementById('verificationStatus').innerHTML = '📱 Code sent! Check your phone';
                     
-                    // Reset reCAPTCHA
-                    window.recaptchaVerifier.render().then(function(widgetId) {
-                        grecaptcha.reset(widgetId);
-                    });
+                    // Recreate reCAPTCHA verifier
+                    try {
+                        window.recaptchaVerifier.clear();
+                        window.recaptchaVerifier = new window.RecaptchaVerifier(window.firebaseAuth, 'recaptcha-container', {
+                            'size': 'invisible',
+                            'callback': (response) => {
+                                console.log('reCAPTCHA solved');
+                            }
+                        });
+                    } catch (e) {
+                        console.error('Error resetting reCAPTCHA:', e);
+                    }
                 });
         }
 
@@ -1083,9 +1231,17 @@
             
             // Reset reCAPTCHA
             if (window.recaptchaVerifier) {
-                window.recaptchaVerifier.render().then(function(widgetId) {
-                    grecaptcha.reset(widgetId);
-                });
+                try {
+                    window.recaptchaVerifier.clear();
+                    window.recaptchaVerifier = new window.RecaptchaVerifier(window.firebaseAuth, 'recaptcha-container', {
+                        'size': 'invisible',
+                        'callback': (response) => {
+                            console.log('reCAPTCHA solved');
+                        }
+                    });
+                } catch (e) {
+                    console.error('Error resetting reCAPTCHA:', e);
+                }
             }
         }
 
@@ -1154,7 +1310,16 @@
                     currentStep = stepNumber;
                     updateProgress();
                 }
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Improved scroll behavior - scroll to top immediately
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                
+                // For mobile, ensure we're at the very top
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                }, 50);
             } else {
                 console.error('Step not found:', stepNumber); // Debug log
             }
@@ -1182,6 +1347,26 @@
             data.phoneVerified = true;
             
             console.log('Lead Data Collected:', data);
+
+            // Send data to webhook
+            fetch('https://services.leadconnectorhq.com/hooks/S98iGBLsgMZHydxxSJG8/webhook-trigger/0439a695-55f0-4916-822e-ddd73879e3d1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                console.log('Webhook response:', response);
+                return response.json();
+            })
+            .then(result => {
+                console.log('Webhook success:', result);
+            })
+            .catch(error => {
+                console.error('Webhook error:', error);
+                // Continue to success page even if webhook fails
+            });
 
             const cardHeader = document.getElementById('cardHeader');
             if (cardHeader) cardHeader.style.display = 'none';
