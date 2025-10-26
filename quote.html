@@ -1509,6 +1509,9 @@
             data.timestamp = formatTimestampEST();
             data.phoneVerified = true;
             
+            // Track Lead conversion in Facebook
+            fbq('track', 'Lead');
+            
             console.log('Lead Data Collected:', data);
 
             // Send data to webhook
