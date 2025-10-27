@@ -1055,8 +1055,8 @@
                                     <span id="verificationStatus">📱 Code sent! Check your phone</span>
                                 </p>
                                 <div style="text-align: center; margin-top: 8px;">
-                                    <button type="button" id="resendCode" onclick="sendVerificationCode()" style="background: transparent; border: none; color: var(--primary); font-weight: 600; font-size: 0.85rem; cursor: pointer; padding: 8px 16px; text-decoration: underline;">
-                                        Resend Code
+                                    <button type="button" id="resendCode" onclick="sendVerificationCode()" disabled style="background: transparent; border: none; color: #cbd5e0; font-weight: 600; font-size: 0.85rem; cursor: not-allowed; padding: 8px 16px; text-decoration: underline; opacity: 0.5;">
+                                        Resend Code <span id="resendTimer">(30s)</span>
                                     </button>
                                 </div>
                             </div>
@@ -1099,14 +1099,6 @@
                                         <div style="text-align: center; flex: 1; min-width: 200px;">
                                             <h4 style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark); margin-bottom: 8px;">Derrick</h4>
                                             <p style="color: var(--text-light); font-size: 1rem; font-weight: 600; margin: 0;">Licensed Insurance Specialist</p>
-                                        </div>
-                                    </div>
-
-                                    <div style="background: #1a1a1a; border-radius: 16px; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; position: relative; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
-                                        <div style="text-align: center; color: white; z-index: 1;">
-                                            <div style="font-size: 4rem; margin-bottom: 12px;">▶️</div>
-                                            <p style="font-size: 1.1rem; font-weight: 600;">Watch Derrick's Introduction</p>
-                                            <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 8px;">Learn how he can help protect your family</p>
                                         </div>
                                     </div>
 
@@ -1214,6 +1206,35 @@
         let verificationCodeSent = false;
         let resendTimer = null;
         let resendCountdown = 30;
+
+        function startResendTimer() {
+            const resendBtn = document.getElementById('resendCode');
+            const timerSpan = document.getElementById('resendTimer');
+            
+            resendCountdown = 30;
+            resendBtn.disabled = true;
+            resendBtn.style.cursor = 'not-allowed';
+            resendBtn.style.color = '#cbd5e0';
+            resendBtn.style.opacity = '0.5';
+            
+            if (resendTimer) {
+                clearInterval(resendTimer);
+            }
+            
+            resendTimer = setInterval(() => {
+                resendCountdown--;
+                timerSpan.textContent = `(${resendCountdown}s)`;
+                
+                if (resendCountdown <= 0) {
+                    clearInterval(resendTimer);
+                    resendBtn.disabled = false;
+                    resendBtn.style.cursor = 'pointer';
+                    resendBtn.style.color = 'var(--primary)';
+                    resendBtn.style.opacity = '1';
+                    timerSpan.textContent = '';
+                }
+            }, 1000);
+        }
 
         const ageSlider = document.getElementById('ageSlider');
         const ageValue = document.getElementById('ageValue');
@@ -1339,6 +1360,9 @@
                     
                     // Update status
                     document.getElementById('verificationStatus').innerHTML = '✅ Code sent! Check your phone';
+                    
+                    // Start the 30-second countdown timer
+                    startResendTimer();
                     
                     // Focus on verification input
                     setTimeout(() => {
@@ -1592,7 +1616,7 @@
         }
 
         function startCall() {
-            window.location.href = 'tel:+18605108741';
+            window.location.href = 'tel:+16152701727';
         }
 
         function startChat() {
@@ -1605,7 +1629,7 @@
             
             const message = `Hi Derrick! My name is ${fullName}. I just submitted my insurance form and I'm interested in ${coverage} coverage. I'd love to discuss my options. When can we chat?`;
             
-            const phoneNumber = '18605108741';
+            const phoneNumber = '16152701727';
             
             const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
             
@@ -1618,21 +1642,21 @@
             
             setTimeout(() => {
                 const shouldCopy = confirm(
-                    `Opening SMS to Derrick at (860) 510-8741\n\n` +
+                    `Opening SMS to Derrick at (615) 270-1727\n\n` +
                     `If SMS doesn't open automatically, click OK to copy the message, then text Derrick manually.\n\n` +
                     `Message: "${message}"`
                 );
                 
                 if (shouldCopy) {
                     navigator.clipboard.writeText(message).then(() => {
-                        alert(`Message copied! 📋\n\nNow text it to: (860) 510-8741`);
+                        alert(`Message copied! 📋\n\nNow text it to: (615) 270-1727`);
                     }).catch(() => {
-                        prompt('Copy this message and text to (860) 510-8741:', message);
+                        prompt('Copy this message and text to (615) 270-1727:', message);
                     });
                 }
             }, 500);
             
-            console.log('Opening SMS to Derrick (860) 510-8741 with message:', message);
+            console.log('Opening SMS to Derrick (615) 270-1727 with message:', message);
         }
 
         updateProgress();
