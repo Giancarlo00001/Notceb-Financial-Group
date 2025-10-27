@@ -1506,6 +1506,8 @@
             const formData = new FormData(document.getElementById('leadForm'));
             const data = Object.fromEntries(formData.entries());
             
+            // Add phone number manually since it's disabled and won't be in formData
+            data.phone = document.getElementById('phone').value;
             data.timestamp = formatTimestampEST();
             data.phoneVerified = true;
             
