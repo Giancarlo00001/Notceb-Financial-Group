@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Your Free Quote - The Notceb Financial Group</title>
     
-    <!-- Meta Pixel Code -->
+    <!-- Meta Pixel Code - TEMPORARILY DISABLED FOR TESTING -->
+    <!--
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -21,6 +22,7 @@
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=1175123634577011&ev=PageView&noscript=1"
     /></noscript>
+    -->
     <!-- End Meta Pixel Code -->
     
     <style>
@@ -250,12 +252,30 @@
             color: var(--primary);
             line-height: 1;
             margin-bottom: 6px;
+            transition: color 0.3s;
+        }
+
+        .age-value.over-limit {
+            color: #ef4444;
         }
 
         .age-label {
             font-size: 1rem;
             color: var(--text-light);
             font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .age-warning {
+            color: #ef4444;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .age-warning.show {
+            display: block;
         }
 
         .slider-wrapper {
@@ -370,8 +390,8 @@
 
         .btn-primary {
             width: 100%;
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #78350f;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
             padding: 14px 32px;
             border: none;
             border-radius: 12px;
@@ -380,7 +400,7 @@
             cursor: pointer;
             transition: all 0.3s;
             margin-top: 8px;
-            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
             position: relative;
             overflow: hidden;
         }
@@ -405,7 +425,7 @@
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.5);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.6);
         }
 
         .btn-primary:active {
@@ -500,6 +520,170 @@
         .trust-icon {
             color: var(--primary);
             font-size: 1.2rem;
+        }
+
+        /* Popup Modal Styles */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .popup-overlay.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup-content {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideUp 0.4s ease;
+            text-align: center;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            color: #94a3b8;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .popup-close:hover {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .popup-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .popup-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .popup-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .popup-highlight {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .popup-highlight p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .click-here-text {
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .button-container {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .popup-button {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 18px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+
+        .popup-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.6);
+        }
+
+        .popup-skip {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 8px;
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 32px rgba(59, 130, 246, 0.6);
+            }
         }
 
         @media (max-width: 768px) {
@@ -856,6 +1040,7 @@
                             <div class="age-display">
                                 <div class="age-value" id="ageValue">45</div>
                                 <div class="age-label">years old</div>
+                                <div class="age-warning" id="ageWarning">⚠️ Maximum age for approval is 80</div>
                             </div>
 
                             <div class="slider-wrapper">
@@ -996,8 +1181,66 @@
                         <button type="button" class="btn-secondary" onclick="goToStep(5)" style="width: 100%; margin-top: 24px;">← Back</button>
                     </div>
 
-                    <!-- Step 7: Name -->
+                    <!-- Step 7: Beneficiary -->
                     <div class="form-step" data-step="7">
+                        <div class="step-header">
+                            <h2 class="step-title">What's your beneficiary's first name?</h2>
+                            <p class="step-subtitle">This is the person who will receive the benefit</p>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" id="beneficiaryName" name="beneficiaryName" required placeholder="Enter first name">
+                        </div>
+
+                        <div class="button-group">
+                            <button type="button" class="btn-secondary" onclick="goToStep(6)">← Back</button>
+                            <button type="button" class="btn-primary" style="flex: 1;" onclick="validateBeneficiaryAndContinue()">
+                                <span class="btn-text">Continue →</span>
+                            </button>
+                        </div>
+
+                        <div class="risk-reversal">
+                            💚 Don't worry — you can change this later
+                        </div>
+                    </div>
+
+                    <!-- Step 8: Health Conditions -->
+                    <div class="form-step" data-step="8">
+                        <div class="step-header">
+                            <h2 class="step-title">Do you have any of these conditions?</h2>
+                            <p class="step-subtitle">✅ You can still qualify — this helps us find the best plan</p>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="radio-grid">
+                                <div class="radio-option">
+                                    <input type="radio" name="healthConditions" value="none" id="health1" required onchange="autoAdvance(9, 'healthConditions')">
+                                    <label for="health1">None of these</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="healthConditions" value="heart-stroke" id="health2" onchange="autoAdvance(9, 'healthConditions')">
+                                    <label for="health2">Heart disease or Stroke</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="healthConditions" value="cancer" id="health3" onchange="autoAdvance(9, 'healthConditions')">
+                                    <label for="health3">Cancer (last 2 years)</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="healthConditions" value="diabetes-copd" id="health4" onchange="autoAdvance(9, 'healthConditions')">
+                                    <label for="health4">Diabetes or COPD</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="healthConditions" value="other" id="health5" onchange="autoAdvance(9, 'healthConditions')">
+                                    <label for="health5">Other condition</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-secondary" onclick="goToStep(7)" style="width: 100%; margin-top: 24px;">← Back</button>
+                    </div>
+
+                    <!-- Step 9: Name -->
+                    <div class="form-step" data-step="9">
                         <div class="step-header">
                             <h2 class="step-title">What's your name?</h2>
                             <p class="step-subtitle">We're almost done - just need a few details</p>
@@ -1016,7 +1259,7 @@
                         </div>
 
                         <div class="button-group">
-                            <button type="button" class="btn-secondary" onclick="goToStep(6)">← Back</button>
+                            <button type="button" class="btn-secondary" onclick="goToStep(8)">← Back</button>
                             <button type="button" class="btn-primary" style="flex: 1;" onclick="validateNameAndContinue()">
                                 <span class="btn-text">Continue →</span>
                             </button>
@@ -1027,8 +1270,8 @@
                         </div>
                     </div>
 
-                    <!-- Step 8: Phone & Email with Verification -->
-                    <div class="form-step" data-step="8">
+                    <!-- Step 10: Phone & Email with Verification -->
+                    <div class="form-step" data-step="10">
                         <div class="step-header">
                             <h2 class="step-title">Last step!</h2>
                             <p class="step-subtitle">Where should we send your free quote?</p>
@@ -1068,7 +1311,7 @@
                         </div>
 
                         <div class="button-group">
-                            <button type="button" class="btn-secondary" onclick="goToStep(7)">← Back</button>
+                            <button type="button" class="btn-secondary" onclick="goToStep(9)">← Back</button>
                             <button type="button" class="btn-primary" id="continueBtn" style="flex: 1;" onclick="handlePhoneSubmit()">
                                 <span class="btn-text">Continue →</span>
                             </button>
@@ -1160,6 +1403,35 @@
         </div>
     </div>
 
+    <!-- Call Now Popup Modal -->
+    <div class="popup-overlay" id="callPopup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup()">×</button>
+            
+            <div class="popup-icon">📞</div>
+            
+            <h2 class="popup-title">Call Now & See If You Qualify</h2>
+            
+            <p class="popup-subtitle">Limited time state-specific coverage available</p>
+            
+            <div class="popup-highlight">
+                <p>✓ Quick 5-minute qualification call<br>
+                ✓ Speak directly with your dedicated agent<br>
+                ✓ Get answers to all your questions</p>
+            </div>
+            
+            <p class="click-here-text">👇 CLICK HERE 👇</p>
+            
+            <div class="button-container">
+                <button class="popup-button" onclick="startCallFromPopup()">
+                    📞 Call Derrick Now
+                </button>
+            </div>
+            
+            <button class="popup-skip" onclick="closePopup()">I'll call later</button>
+        </div>
+    </div>
+
     <script type="module">
         // Import Firebase
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -1201,7 +1473,7 @@
 
     <script>
         let currentStep = 1;
-        const totalSteps = 8;
+        const totalSteps = 10;
         let phoneVerified = false;
         let verificationCodeSent = false;
         let resendTimer = null;
@@ -1238,12 +1510,24 @@
 
         const ageSlider = document.getElementById('ageSlider');
         const ageValue = document.getElementById('ageValue');
+        const ageWarning = document.getElementById('ageWarning');
 
         ageSlider.addEventListener('input', function() {
-            ageValue.textContent = this.value;
+            const age = parseInt(this.value);
+            ageValue.textContent = age;
             
-            const percent = ((this.value - this.min) / (this.max - this.min)) * 100;
-            this.style.background = `linear-gradient(to right, var(--primary) 0%, var(--primary) ${percent}%, var(--border) ${percent}%, var(--border) 100%)`;
+            // Show warning and change color if over 80
+            if (age > 80) {
+                ageValue.classList.add('over-limit');
+                ageWarning.classList.add('show');
+                const percent = ((this.value - this.min) / (this.max - this.min)) * 100;
+                this.style.background = `linear-gradient(to right, #ef4444 0%, #ef4444 ${percent}%, var(--border) ${percent}%, var(--border) 100%)`;
+            } else {
+                ageValue.classList.remove('over-limit');
+                ageWarning.classList.remove('show');
+                const percent = ((this.value - this.min) / (this.max - this.min)) * 100;
+                this.style.background = `linear-gradient(to right, var(--primary) 0%, var(--primary) ${percent}%, var(--border) ${percent}%, var(--border) 100%)`;
+            }
         });
 
         const initPercent = ((ageSlider.value - ageSlider.min) / (ageSlider.max - ageSlider.min)) * 100;
@@ -1270,6 +1554,18 @@
             if (!firstName.value.trim() || !lastName.value.trim()) {
                 alert('Please enter your first and last name');
                 firstName.focus();
+                return;
+            }
+
+            goToStep(10);
+        }
+
+        function validateBeneficiaryAndContinue() {
+            const beneficiaryName = document.getElementById('beneficiaryName');
+
+            if (!beneficiaryName.value.trim()) {
+                alert('Please enter your beneficiary\'s first name');
+                beneficiaryName.focus();
                 return;
             }
 
@@ -1535,8 +1831,8 @@
             data.timestamp = formatTimestampEST();
             data.phoneVerified = true;
             
-            // Track Lead conversion in Facebook
-            fbq('track', 'Lead');
+            // Track Lead conversion in Facebook - TEMPORARILY DISABLED FOR TESTING
+            // fbq('track', 'Lead');
             
             console.log('Lead Data Collected:', data);
 
@@ -1578,6 +1874,32 @@
             }
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Show popup 3 seconds after reaching success page
+            setTimeout(function() {
+                showPopup();
+            }, 3000);
+        }
+
+        function showPopup() {
+            document.getElementById('callPopup').classList.add('show');
+        }
+
+        function closePopup() {
+            document.getElementById('callPopup').classList.remove('show');
+        }
+
+        // Close popup when clicking outside
+        document.addEventListener('click', function(event) {
+            const popup = document.getElementById('callPopup');
+            if (event.target === popup) {
+                closePopup();
+            }
+        });
+
+        function startCallFromPopup() {
+            closePopup();
+            window.location.href = 'tel:+16152701727';
         }
 
         function formatTimestampEST() {
@@ -1616,7 +1938,7 @@
         }
 
         function startCall() {
-            window.location.href = 'tel:+16152701727';
+            showPopup();
         }
 
         function startChat() {
